@@ -1,0 +1,25 @@
+version: '2'
+services:
+   web:
+      build: ./web
+      ports:
+         - "5000:5000"
+      depends_on:
+         - postgres
+      links:
+         - postgres
+         - elastic
+      expose:
+         - 5000
+      command:
+         "python run.py"
+   postgres:
+      image: postgres:9.5
+      environment:
+         POSTGRES_USER: "gimtest"
+         POSTGRES_PASSWORD: "gimtest"
+         POSTGRES_DB: "gimtest-users"
+      volumes:
+        - /var/lib/postgresql/data
+   elastic:
+      image: elasticsearch:2.3
